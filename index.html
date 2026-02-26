@@ -4,136 +4,452 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Christopher Gonzalez Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0f;
+            --surface: #13131a;
+            --card: #1a1a24;
+            --border: #2a2a3a;
+            --accent: #6c63ff;
+            --accent2: #00d4ff;
+            --text: #e8e8f0;
+            --muted: #8888aa;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(10,10,15,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 40px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        nav .logo {
+            font-size: 1.1rem; font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        nav ul { list-style: none; display: flex; gap: 32px; }
+        nav ul a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+        nav ul a:hover { color: var(--text); }
+
+        /* HERO */
+        #hero {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center;
+            padding: 100px 40px 60px;
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(108,99,255,0.12) 0%, transparent 70%);
+            position: relative; overflow: hidden;
+        }
+        #hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse 40% 40% at 70% 60%, rgba(0,212,255,0.06) 0%, transparent 60%);
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 700px; }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(108,99,255,0.15);
+            border: 1px solid rgba(108,99,255,0.3);
+            color: var(--accent);
+            padding: 6px 16px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 600; letter-spacing: 1px;
+            text-transform: uppercase; margin-bottom: 24px;
+        }
+        #hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700; line-height: 1.15;
+            margin-bottom: 20px;
+        }
+        #hero h1 span {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        #hero p {
+            color: var(--muted); font-size: 1.05rem;
+            max-width: 560px; margin: 0 auto 36px;
+        }
+        .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .btn {
+            padding: 12px 28px; border-radius: 8px;
+            font-size: 0.9rem; font-weight: 600;
+            text-decoration: none; transition: all 0.2s;
+            cursor: pointer; border: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: #fff;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,99,255,0.35); }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* SECTIONS */
+        section { padding: 80px 40px; max-width: 1100px; margin: 0 auto; }
+        .section-label {
+            font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; color: var(--accent);
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            font-weight: 700; margin-bottom: 48px;
+            color: var(--text);
+        }
+
+        /* ABOUT */
+        #about { border-top: 1px solid var(--border); }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+        .about-text { color: var(--muted); font-size: 0.97rem; line-height: 1.85; }
+        .about-text p + p { margin-top: 16px; }
+        .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .skill-chip {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px; padding: 10px 14px;
+            font-size: 0.82rem; font-weight: 500; color: var(--muted);
+            transition: all 0.2s;
+        }
+        .skill-chip:hover { border-color: var(--accent); color: var(--text); }
+
+        /* PROJECTS */
+        #projects { border-top: 1px solid var(--border); }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+        .project-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px; padding: 24px;
+            transition: all 0.25s;
+            text-decoration: none;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .project-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(108,99,255,0.12);
+        }
+        .project-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+        }
+        .project-card h3 { font-size: 1rem; font-weight: 600; color: var(--text); }
+        .project-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; flex: 1; }
+        .project-tag {
+            display: inline-block;
+            background: rgba(108,99,255,0.1);
+            border: 1px solid rgba(108,99,255,0.2);
+            color: var(--accent);
+            padding: 3px 10px; border-radius: 20px;
+            font-size: 0.72rem; font-weight: 600;
+        }
+        .project-arrow { color: var(--muted); font-size: 0.85rem; margin-top: auto; }
+
+        /* CERTIFICATIONS */
+        #certifications { border-top: 1px solid var(--border); }
+        .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .cert-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px; padding: 18px 20px;
+            display: flex; align-items: center; gap: 14px;
+            text-decoration: none; transition: all 0.2s;
+        }
+        .cert-card:hover { border-color: var(--accent2); transform: translateY(-2px); }
+        .cert-icon { font-size: 1.4rem; flex-shrink: 0; }
+        .cert-card span { font-size: 0.85rem; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+        /* LINKS */
+        #links { border-top: 1px solid var(--border); }
+        .links-row { display: flex; gap: 16px; flex-wrap: wrap; }
+        .link-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px; padding: 16px 24px;
+            text-decoration: none; color: var(--text);
+            font-weight: 600; font-size: 0.9rem;
+            transition: all 0.2s;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .link-card:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* RESUME */
+        #resume { border-top: 1px solid var(--border); text-align: center; padding-bottom: 100px; }
+        #resume p { color: var(--muted); margin-bottom: 24px; }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid var(--border);
+            text-align: center; padding: 32px;
+            color: var(--muted); font-size: 0.82rem;
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 16px 20px; }
+            nav ul { gap: 16px; }
+            section { padding: 60px 20px; }
+            .about-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- About Me Section -->
-    <section id="about">
-        <h1>About Me</h1>
-        <p>
-            I’m a Computer Systems student at New York City College of Technology (BTech, expected 2026) with hands-on experience across IT operations, automation, data engineering, and AI development. Through multiple IT internships, I’ve supported enterprise environments by imaging and deploying laptops at scale, managing and resolving tickets in ServiceNow, configuring MFA and identity access through Okta, supporting endpoint security with tools like CrowdStrike, and troubleshooting hardware, network, and software issues in fast-paced environments.
+<nav>
+    <div class="logo">CG</div>
+    <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#certifications">Certs</a></li>
+        <li><a href="#resume">Resume</a></li>
+    </ul>
+</nav>
 
-Beyond traditional IT support, I’ve focused heavily on automation and AI integration. I’ve built AI-powered chatbot solutions using Azure OpenAI, connecting large language models to Microsoft SQL databases to generate structured, data-driven responses. This includes designing prompt engineering strategies, mapping user questions to SQL queries, validating outputs, and improving response accuracy through iterative testing. I’ve also worked with automation tools like Power Automate to streamline workflows, reduce manual processes, and improve operational efficiency.
-
-On the data side, I’ve developed full data warehouse implementations using SQL Server, including stored procedures, triggers, business rules, transactions, ETL pipelines, and JSON outputs for structured reporting. I’ve built analytical dashboards in Power BI and Tableau to track KPIs, performance metrics, and operational insights.
-
-My focus is on building scalable systems that combine IT infrastructure, automation, and AI to improve security, efficiency, and data-driven decision-making. I’m especially interested in roles that sit at the intersection of AI engineering, analytics, and enterprise technology.
-            </p>
-    </section>
-
-    <!-- Projects Section -->
-    <h2>Projects</h2>
-    <section id="projects">
-
-         <div class="project">
-            <h3><a href="https://github.com/dgrbch1/Video-Game-Sales" target="_blank">Video-Games-Sales</a></h3>
-            <p>This project is about video games sales datawarehouse done in SSIS,SSAS,and excel</p>
+<!-- HERO -->
+<div id="hero">
+    <div class="hero-content">
+        <div class="hero-badge">Available for Internships</div>
+        <h1>Hi, I'm <span>Christopher Gonzalez</span></h1>
+        <p>Computer Systems Technology student at NYCCT building at the intersection of data engineering, AI, and automation.</p>
+        <div class="hero-btns">
+            <a href="#projects" class="btn btn-primary">View My Work</a>
+            <a href="Christopher Gonzalez Resume.pdf" target="_blank" class="btn btn-outline">Download Resume</a>
         </div>
-        
-        <div class="project">
-            <h3><a href="https://dgrbch1.github.io/-csv-chart-generator/" target="_blank">CSV Chart Generator</a></h3>
-            <p>Built a web app that lets users upload CSV files and automatically generate Bar, Line, Pie, Doughnut, and Scatter charts using Chart.js.
-
-       Created an AI-style auto-suggest feature that analyzes column data types (numeric, categorical, date) 
-       to recommend the best chart in real time. Used Claude AI to help design and refine the analytical logic behind the recommendation system.
-                
-            </p>
-        </div>
-
-        
-        <div class="project">
-            <h3><a href="https://github.com/dgrbch1/NBA-Basketball-Database/tree/main">NBA Basketball DataWarehouse</a></h3>
-            <p>
-                A fully designed and implemented SQL-based NBA Data Warehouse built to analyze player performance, team statistics, and game outcomes using advanced database concepts including stored procedures, business rules, triggers, transactions, and JSON processing.
-                
-            </p>
-        </div>
-
-        <div class="project">
-            <h3><a href="https://github.com/dgrbch1/NBA-Chatbot-Python" target="_blank">Basketball Chatbot (Python)</a></h3>
-            <p>This project is a chatbot that provides users with information on basketball players using Python and JSON data.</p>
-        </div>
-
-        <div class="project">
-            <h3><a href="https://github.com/dgrbch1/Google-Capstone-Project" target="_blank">Sports Analytics </a></h3>
-            <p>A dashboard built using Tableau to analyze sports performance and provide insights using Google SQL, Tableau and Excel data.</p>
-        </div>
-
-        <div class="project">
-            <h3><a href="https://dgrbch1.github.io/JS-Final/" target="_blank">JS Final Portfolio</a></h3>
-            <p>This project is one website full of various Java Script projects I have done.</p>
-        </div>
-        <div class="project">
-            <h3><a href="https://dgrbch1.github.io/Threat-Analysis/" target="_blank">Threat Analysis</a></h3>
-            <p>Tutorial on Shodan & CVES IP Addresses</p>
-        </div>
-  
-        <div class="project">
-            <h3><a href="https://replit.com/@lebronjr/RockPaperScissors?v=1" target="_blank">Rock Paper Scissors</a></h3>
-            <p>	Developed an interactive Python game that simulates the classic Rock Paper Scissors game</p>
-        </div>
-
-        <div class="project">
-            <h3><a href="https://dgrbch1.github.io/MsVenom/" target="_blank">MS Venom</a></h3>
-            <p> In this project, I demonstrated the use of msfvenom to generate and combine payloads for ethical hacking purposes.</p>
-        </div>
-        <div class="project">
-    <h3><a href="https://github.com/dgrbch1/Java-Encrypted" target="_blank">Password Encryption Tool (Java)</a></h3>
-    <p>This project is a Java-based GUI application that allows users to encrypt and decrypt passwords using AES, DES, and RSA encryption algorithms. The tool securely stores encrypted passwords to a file and demonstrates expertise in cryptography and secure file handling.</p>
+    </div>
 </div>
-<div class="project">
-            <h3><a href="https://dgrbch1.github.io/Steghide/#license" target="_blank">Steganography</a></h3>
-            <p>Steganography tutorial</p>
-        </div>
- <div class="project">
-            <h3><a href="https://dgrbch1.github.io/Exploits/" target="_blank">Exploits</a></h3>
-            <p>Exploits Tutorial</p>
-        </div>
- <div class="project">
-            <h3><a href="https://github.com/dgrbch1/Social-Tool-Engineering-Kit" target="_blank">Social Tool Engineering Kit</a></h3>
-            <p>Tutorial on how to use an open-source Python tool for conducting penetration tests with a focus on social engineering tactics. </p>
-        </div>
- <div class="project">
-            <h3><a href="https://www.kaggle.com/code/goatlebron/nba-players-predictions" target="_blank">NBA Player Performance Prediction Using Machine Learning</a></h3>
-            <p>Tutorial on using Python to findout NBA PLayer Performance Prediction Using Machine Learning</p>
-        </div>
-<div class="project">
-            <h3><a href="https://github.com/dgrbch1/John-Ripper" target="_blank">John the Ripper</a></h3>
-            <p>John the Ripper tutorial in Windows Linux</p>
-        </div>    
-    </section>
 
- 
-    <section id="certifications">
-        <h2>Certifications</h2>
+<!-- ABOUT -->
+<section id="about">
+    <div class="section-label">About Me</div>
+    <div class="section-title">Who I Am</div>
+    <div class="about-grid">
+        <div class="about-text">
+            <p>I'm a Computer Systems Technology student at New York City College of Technology (BTech, expected 2026) with hands-on experience across IT operations, automation, data engineering, and AI development.</p>
+            <p>Through multiple IT internships, I've supported enterprise environments — imaging and deploying laptops at scale, managing tickets in ServiceNow, configuring MFA through Okta, supporting endpoint security with CrowdStrike, and troubleshooting hardware, network, and software issues in fast-paced environments.</p>
+            <p>Beyond IT support, I've built AI-powered chatbot solutions using Azure OpenAI, designed ETL pipelines, built full data warehouses, and created analytical dashboards in Power BI and Tableau. My focus is on scalable systems that combine IT infrastructure, automation, and AI.</p>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-chip">SQL Server & SSMS</div>
+            <div class="skill-chip">Python & Java</div>
+            <div class="skill-chip">SSIS / SSAS (ETL)</div>
+            <div class="skill-chip">Power BI & Tableau</div>
+            <div class="skill-chip">Azure OpenAI & RAG</div>
+            <div class="skill-chip">Power Automate</div>
+            <div class="skill-chip">Google Cloud & AWS</div>
+            <div class="skill-chip">JavaScript / HTML / CSS</div>
+            <div class="skill-chip">ServiceNow & Jira</div>
+            <div class="skill-chip">Git & GitHub</div>
+        </div>
+    </div>
+</section>
 
-        <ul>
-            <li><a href="https://www.coursera.org/account/accomplishments/specialization/certificate/BGNQEUGFOHRA" target="_blank">Google Business Intelligence Professional Certificate</a></li>
-            <li><a href= 'https://www.parchment.com/u/award/abbe93ab9173281e9d440be0be9c57bc'   target="_blank">BMCC Associates Degree</a></li>
-            <li><a href="https://coursera.org/share/ed5f91bd64ee9f1ae06e8201380bb993" target="_blank">Google Data Analytics Professional Certificate</a></li>
-            <li><a href="YearUp.pdf" target="_blank">Year Up Software Development Certificate</a></li>
-             <li><a href="Christopher Gonzalez.pdf" target="_blank">Intro to Cybersecurity CodePath</a></li>
-            <li><a href="https://www.credly.com/badges/c9fc1f21-72f3-42ad-af70-9b6b070f6c57/public_url" target="_blank">CIS 301: Software Testing and Quality Assurance</a></li>
-            <li><a href="https://www.credly.com/badges/1e41c748-0b68-4ac8-a594-5110b46e702a/public_url" target="_blank">CIS 101: Introduction to Computer Applications</a></li>
-             <li><a href="https://www.credential.net/c615390c-73bc-432d-9214-17ff1cdebe15#acc.zCyk60tr" target="_blank">Demystifying Generative AI</a></li>
-        </ul>
-    </section>
-    <section id="links">
-        <h2>Useful Links</h2>
+<!-- PROJECTS -->
+<section id="projects">
+    <div class="section-label">Work</div>
+    <div class="section-title">Projects</div>
+    <div class="projects-grid">
 
-        <ul>
-            <li><a href="https://github.com/dgrbch1" target="_blank">GitHub Profile</a></li>
-            <li><a href="https://www.linkedin.com/in/christopher-gonzalez-55a437202/" target="_blank">LinkedIn Profile</a></li>
-            <li><a href="https://replit.com/@lebronjr" target="_blank">Replit Profile</a></li>
-            
-        </ul>
-    </section>
-    <!-- Resume Section -->
-    <section id="resume">
-        <h2>Resume</h2>
-    <p>You can <a href="Christopher Gonzalez Resume.pdf" target="_blank">download my resume here</a>.</p>
-    </section>
+        <a href="https://github.com/dgrbch1/Video-Game-Sales" target="_blank" class="project-card">
+            <div class="project-icon">🎮</div>
+            <h3>Video Game Sales Data Warehouse</h3>
+            <p>End-to-end BI project — built a star-schema data warehouse in SQL Server, automated ETL pipelines with SSIS, and constructed an OLAP cube in SSAS to analyze 8,920+ sales records across 30+ platforms.</p>
+            <span class="project-tag">SQL · SSIS · SSAS · Excel</span>
+            <div class="project-arrow">View on GitHub →</div>
+        </a>
+
+        <a href="https://dgrbch1.github.io/-csv-chart-generator/" target="_blank" class="project-card">
+            <div class="project-icon">📊</div>
+            <h3>CSV Chart Generator</h3>
+            <p>Web app that lets users upload CSV files and automatically generate Bar, Line, Pie, Doughnut, and Scatter charts. Includes an AI-style auto-suggest feature that recommends the best chart type based on data column types.</p>
+            <span class="project-tag">JavaScript · Chart.js · AI</span>
+            <div class="project-arrow">View Live →</div>
+        </a>
+
+        <a href="https://github.com/dgrbch1/NBA-Basketball-Database/tree/main" target="_blank" class="project-card">
+            <div class="project-icon">🏀</div>
+            <h3>NBA Basketball Data Warehouse</h3>
+            <p>Fully designed SQL-based data warehouse for analyzing player performance, team stats, and game outcomes — featuring stored procedures, business rules, triggers, transactions, and JSON processing.</p>
+            <span class="project-tag">SQL Server · Stored Procs · JSON</span>
+            <div class="project-arrow">View on GitHub →</div>
+        </a>
+
+        <a href="https://github.com/dgrbch1/NBA-Chatbot-Python" target="_blank" class="project-card">
+            <div class="project-icon">🤖</div>
+            <h3>Basketball Chatbot (Python)</h3>
+            <p>Chatbot that provides users with real-time information on basketball players using Python and structured JSON data.</p>
+            <span class="project-tag">Python · JSON · NLP</span>
+            <div class="project-arrow">View on GitHub →</div>
+        </a>
+
+        <a href="https://github.com/dgrbch1/Google-Capstone-Project" target="_blank" class="project-card">
+            <div class="project-icon">📈</div>
+            <h3>Sports Analytics Dashboard</h3>
+            <p>Interactive dashboard built with Tableau and Google Cloud SQL to analyze sports performance, visualize KPIs, and surface actionable insights from large datasets.</p>
+            <span class="project-tag">Tableau · Google Cloud · SQL</span>
+            <div class="project-arrow">View on GitHub →</div>
+        </a>
+
+        <a href="https://github.com/dgrbch1/Java-Encrypted" target="_blank" class="project-card">
+            <div class="project-icon">🔐</div>
+            <h3>Password Encryption Tool (Java)</h3>
+            <p>Java GUI application for encrypting and decrypting passwords using AES, DES, and RSA algorithms with secure file storage.</p>
+            <span class="project-tag">Java · Cryptography · GUI</span>
+            <div class="project-arrow">View on GitHub →</div>
+        </a>
+
+        <a href="https://dgrbch1.github.io/JS-Final/" target="_blank" class="project-card">
+            <div class="project-icon">💻</div>
+            <h3>JS Final Portfolio</h3>
+            <p>A collection of JavaScript projects showcasing DOM manipulation, interactivity, and front-end development skills.</p>
+            <span class="project-tag">JavaScript · HTML · CSS</span>
+            <div class="project-arrow">View Live →</div>
+        </a>
+
+        <a href="https://dgrbch1.github.io/Threat-Analysis/" target="_blank" class="project-card">
+            <div class="project-icon">🛡️</div>
+            <h3>Threat Analysis</h3>
+            <p>Tutorial covering Shodan and CVE IP address analysis for cybersecurity threat identification and assessment.</p>
+            <span class="project-tag">Cybersecurity · Shodan · CVE</span>
+            <div class="project-arrow">View Live →</div>
+        </a>
+
+        <a href="https://replit.com/@lebronjr/RockPaperScissors?v=1" target="_blank" class="project-card">
+            <div class="project-icon">✊</div>
+            <h3>Rock Paper Scissors</h3>
+            <p>Interactive Python game simulating the classic Rock Paper Scissors game with real-time user input and score tracking.</p>
+            <span class="project-tag">Python</span>
+            <div class="project-arrow">View on Replit →</div>
+        </a>
+
+        <a href="https://dgrbch1.github.io/MsVenom/" target="_blank" class="project-card">
+            <div class="project-icon">⚡</div>
+            <h3>MS Venom</h3>
+            <p>Demonstration of msfvenom payload generation and combination techniques for ethical hacking and penetration testing.</p>
+            <span class="project-tag">Cybersecurity · Metasploit</span>
+            <div class="project-arrow">View Live →</div>
+        </a>
+
+        <a href="https://dgrbch1.github.io/Steghide/#license" target="_blank" class="project-card">
+            <div class="project-icon">🕵️</div>
+            <h3>Steganography</h3>
+            <p>Tutorial on steganography techniques using Steghide for hiding and extracting data within image files.</p>
+            <span class="project-tag">Cybersecurity · Steganography</span>
+            <div class="project-arrow">View Live →</div>
+        </a>
+
+        <a href="https://github.com/dgrbch1/Social-Tool-Engineering-Kit" target="_blank" class="project-card">
+            <div class="project-icon">🎭</div>
+            <h3>Social Engineering Toolkit</h3>
+            <p>Tutorial on using an open-source Python tool for penetration testing focused on social engineering tactics.</p>
+            <span class="project-tag">Python · Pen Testing</span>
+            <div class="project-arrow">View on GitHub →</div>
+        </a>
+
+        <a href="https://www.kaggle.com/code/goatlebron/nba-players-predictions" target="_blank" class="project-card">
+            <div class="project-icon">🧠</div>
+            <h3>NBA Player Performance Prediction</h3>
+            <p>Machine learning project using Python to predict NBA player performance metrics and analyze statistical trends.</p>
+            <span class="project-tag">Python · ML · Kaggle</span>
+            <div class="project-arrow">View on Kaggle →</div>
+        </a>
+
+        <a href="https://github.com/dgrbch1/John-Ripper" target="_blank" class="project-card">
+            <div class="project-icon">🔓</div>
+            <h3>John the Ripper</h3>
+            <p>Tutorial on using John the Ripper for password cracking across Windows and Linux environments.</p>
+            <span class="project-tag">Cybersecurity · Linux</span>
+            <div class="project-arrow">View on GitHub →</div>
+        </a>
+
+        <a href="https://dgrbch1.github.io/Exploits/" target="_blank" class="project-card">
+            <div class="project-icon">💥</div>
+            <h3>Exploits Tutorial</h3>
+            <p>Educational walkthrough of common exploitation techniques for ethical hacking and security research.</p>
+            <span class="project-tag">Cybersecurity · Exploits</span>
+            <div class="project-arrow">View Live →</div>
+        </a>
+
+    </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+    <div class="section-label">Credentials</div>
+    <div class="section-title">Certifications</div>
+    <div class="certs-grid">
+        <a href="https://www.coursera.org/account/accomplishments/specialization/certificate/BGNQEUGFOHRA" target="_blank" class="cert-card">
+            <div class="cert-icon">📊</div>
+            <span>Google Business Intelligence Professional Certificate</span>
+        </a>
+        <a href="https://www.parchment.com/u/award/abbe93ab9173281e9d440be0be9c57bc" target="_blank" class="cert-card">
+            <div class="cert-icon">🎓</div>
+            <span>BMCC Associates Degree</span>
+        </a>
+        <a href="https://coursera.org/share/ed5f91bd64ee9f1ae06e8201380bb993" target="_blank" class="cert-card">
+            <div class="cert-icon">📈</div>
+            <span>Google Data Analytics Professional Certificate</span>
+        </a>
+        <a href="YearUp.pdf" target="_blank" class="cert-card">
+            <div class="cert-icon">💼</div>
+            <span>Year Up Software Development Certificate</span>
+        </a>
+        <a href="Christopher Gonzalez.pdf" target="_blank" class="cert-card">
+            <div class="cert-icon">🛡️</div>
+            <span>Intro to Cybersecurity – CodePath</span>
+        </a>
+        <a href="https://www.credly.com/badges/c9fc1f21-72f3-42ad-af70-9b6b070f6c57/public_url" target="_blank" class="cert-card">
+            <div class="cert-icon">🧪</div>
+            <span>CIS 301: Software Testing and Quality Assurance</span>
+        </a>
+        <a href="https://www.credly.com/badges/1e41c748-0b68-4ac8-a594-5110b46e702a/public_url" target="_blank" class="cert-card">
+            <div class="cert-icon">💻</div>
+            <span>CIS 101: Introduction to Computer Applications</span>
+        </a>
+        <a href="https://www.credential.net/c615390c-73bc-432d-9214-17ff1cdebe15#acc.zCyk60tr" target="_blank" class="cert-card">
+            <div class="cert-icon">🤖</div>
+            <span>Demystifying Generative AI</span>
+        </a>
+    </div>
+</section>
+
+<!-- LINKS -->
+<section id="links">
+    <div class="section-label">Connect</div>
+    <div class="section-title">Find Me Online</div>
+    <div class="links-row">
+        <a href="https://github.com/dgrbch1" target="_blank" class="link-card">⚡ GitHub</a>
+        <a href="https://www.linkedin.com/in/christopher-gonzalez-55a437202/" target="_blank" class="link-card">💼 LinkedIn</a>
+        <a href="https://replit.com/@lebronjr" target="_blank" class="link-card">🔧 Replit</a>
+    </div>
+</section>
+
+<!-- RESUME -->
+<section id="resume">
+    <div class="section-label">Resume</div>
+    <div class="section-title">Download My Resume</div>
+    <p>Get a full overview of my experience, skills, and education.</p>
+    <a href="Christopher Gonzalez Resume.pdf" target="_blank" class="btn btn-primary">Download Resume PDF</a>
+</section>
+
+<footer>
+    <p>Built by Christopher Gonzalez · NYCCT Computer Systems Technology · 2026</p>
+</footer>
 
 </body>
 </html>
